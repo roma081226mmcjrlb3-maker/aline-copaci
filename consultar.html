@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reportes | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Panel del COPACI</h1>
+
+    <nav>
+
+        <a href="copaci.html">
+            Inicio
+        </a>
+
+        <a href="consultar.html">
+            Reportes
+        </a>
+
+        <a href="avisos.html">
+            Avisos
+        </a>
+
+        <a href="index.html">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <section class="bienvenida">
+
+        <h2>Reportes ciudadanos</h2>
+
+        <p>
+            Aquí puedes consultar los reportes realizados
+            por los ciudadanos y atenderlos.
+        </p>
+
+    </section>
+
+
+    <!-- =========================================
+         LISTA DE REPORTES
+    ========================================== -->
+
+    <section id="listaReportes">
+
+        <!-- Los reportes aparecerán aquí -->
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =========================================
+   MOSTRAR TODOS LOS REPORTES
+========================================= */
+
+function mostrarReportes() {
+
+    const lista =
+        document.getElementById("listaReportes");
+
+
+    /*
+    Obtener los reportes guardados
+    */
+
+    const reportes =
+        JSON.parse(
+            localStorage.getItem("reportes")
+        ) || [];
+
+
+    /*
+    Limpiar la sección
+    */
+
+    lista.innerHTML = "";
+
+
+    /*
+    Si no existen reportes
+    */
+
+    if (reportes.length === 0) {
+
+        lista.innerHTML = `
+
+            <article class="tarjeta">
+
+                <h3>
+                    No hay reportes
+                </h3>
+
+                <p>
+                    Todavía no se han registrado
+                    reportes ciudadanos.
+                </p>
+
+            </article>
+
+        `;
+
+        return;
+    }
+
+
+    /*
+    =========================================
+    MOSTRAR CADA REPORTE
+    =========================================
+    */
+
+    reportes.forEach(function(reporte) {
+
+        lista.innerHTML += `
+
+            <article class="tarjeta">
+
+                <h3>
+                    📝 ${reporte.asunto}
+                </h3>
+
+                <p>
+                    <strong>Ciudadano:</strong>
+                    ${reporte.usuario}
+                </p>
+
+                <p>
+                    <strong>Descripción:</strong>
+                    ${reporte.descripcion}
+                </p>
+
+                <p>
+                    <strong>Ubicación:</strong>
+                    ${reporte.ubicacion}
+                </p>
+
+                <p>
+                    <strong>Estado actual:</strong>
+
+                    <span>
+                        ${reporte.estado}
+                    </span>
+
+                </p>
+
+
+                <hr>
+
+
+                <h4>
+                    Atender reporte
+                </h4>
+
+
+                <!-- BOTÓN PENDIENTE -->
+
+                <button
+                    onclick="cambiarEstado(
+                        ${reporte.id},
+                        'Pendiente'
+                    )">
+
+                    Pendiente
+
+                </button>
+
+
+                <!-- BOTÓN EN PROCESO -->
+
+                <button
+                    onclick="cambiarEstado(
+                        ${reporte.id},
+                        'En proceso'
+                    )">
+
+                    En proceso
+
+                </button>
+
+
+                <!-- BOTÓN RESUELTO -->
+
+                <button
+                    onclick="cambiarEstado(
+                        ${reporte.id},
+                        'Resuelto'
+                    )">
+
+                    Resuelto
+
+                </button>
+
+            </article>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================================
+   CAMBIAR ESTADO DEL REPORTE
+========================================= */
+
+function cambiarEstado(id, nuevoEstado) {
+
+
+    /*
+    Obtener reportes
+    */
+
+    let reportes =
+        JSON.parse(
+            localStorage.getItem("reportes")
+        ) || [];
+
+
+    /*
+    Buscar el reporte
+    */
+
+    const reporte =
+        reportes.find(function(reporte) {
+
+            return reporte.id === id;
+
+        });
+
+
+    /*
+    Cambiar estado
+    */
+
+    if (reporte) {
+
+        reporte.estado = nuevoEstado;
+
+    }
+
+
+    /*
+    Guardar nuevamente
+    */
+
+    localStorage.setItem(
+        "reportes",
+        JSON.stringify(reportes)
+    );
+
+
+    /*
+    Actualizar pantalla
+    */
+
+    mostrarReportes();
+
+
+    alert(
+        "El estado del reporte cambió a: " +
+        nuevoEstado
+    );
+
+}
+
+
+/* =========================================
+   CARGAR REPORTES AL ABRIR
+========================================= */
+
+mostrarReportes();
+
+</script>
+
+
+</body>
+
+</html>

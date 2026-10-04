@@ -1,0 +1,562 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Avisos | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Administración de avisos</h1>
+
+    <nav>
+
+        <a href="admin.html">Inicio</a>
+
+        <a href="usuarios.html">Usuarios</a>
+
+        <a href="miembros.html">Miembros</a>
+
+        <a href="avisos.html">Avisos</a>
+
+        <a href="index.html">Cerrar sesión</a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <h2>📢 Administración de avisos</h2>
+
+    <p>
+        Publica y administra la información importante
+        para los ciudadanos.
+    </p>
+
+
+    <!-- FORMULARIO PARA PUBLICAR -->
+
+    <section class="tarjeta">
+
+        <h3>📝 Crear nuevo aviso</h3>
+
+
+        <label for="titulo">
+            Título del aviso
+        </label>
+
+        <input
+            type="text"
+            id="titulo"
+            placeholder="Ej. Reunión del COPACI"
+        >
+
+
+        <label for="descripcion">
+            Descripción
+        </label>
+
+        <textarea
+            id="descripcion"
+            rows="5"
+            placeholder="Escribe aquí la información del aviso"
+        ></textarea>
+
+
+        <button
+            type="button"
+            class="boton"
+            id="btnPublicar">
+
+            📢 Publicar aviso
+
+        </button>
+
+
+        <p id="mensaje"></p>
+
+    </section>
+
+
+    <!-- AVISOS PUBLICADOS -->
+
+    <h2>📋 Avisos publicados</h2>
+
+    <section id="listaAvisos"></section>
+
+</main>
+
+
+<script>
+
+
+// ========================================
+// ELEMENTOS DE LA PÁGINA
+// ========================================
+
+const botonPublicar =
+    document.getElementById("btnPublicar");
+
+const titulo =
+    document.getElementById("titulo");
+
+const descripcion =
+    document.getElementById("descripcion");
+
+const listaAvisos =
+    document.getElementById("listaAvisos");
+
+const mensaje =
+    document.getElementById("mensaje");
+
+
+
+// ========================================
+// OBTENER AVISOS
+// ========================================
+
+function obtenerAvisos() {
+
+    const datos =
+        localStorage.getItem("avisosCOPACI");
+
+
+    if (!datos) {
+
+        return [];
+
+    }
+
+
+    try {
+
+        return JSON.parse(datos);
+
+    }
+    catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+
+// ========================================
+// GUARDAR AVISOS
+// ========================================
+
+function guardarAvisos(avisos) {
+
+    localStorage.setItem(
+        "avisosCOPACI",
+        JSON.stringify(avisos)
+    );
+
+}
+
+
+
+// ========================================
+// PUBLICAR AVISO
+// ========================================
+
+botonPublicar.addEventListener(
+    "click",
+    function() {
+
+
+        const tituloTexto =
+            titulo.value.trim();
+
+
+        const descripcionTexto =
+            descripcion.value.trim();
+
+
+        // Comprobar campos
+
+        if (
+            tituloTexto === "" ||
+            descripcionTexto === ""
+        ) {
+
+            mensaje.textContent =
+                "⚠️ Completa el título y la descripción.";
+
+            mensaje.style.color =
+                "#8b5e3c";
+
+            return;
+
+        }
+
+
+        // Obtener avisos existentes
+
+        const avisos =
+            obtenerAvisos();
+
+
+        // Crear nuevo aviso
+
+        const nuevoAviso = {
+
+            id: Date.now(),
+
+            titulo: tituloTexto,
+
+            descripcion: descripcionTexto,
+
+            fecha: new Date().toLocaleDateString(
+                "es-MX"
+            )
+
+        };
+
+
+        // Agregar aviso
+
+        avisos.push(nuevoAviso);
+
+
+        // Guardar avisos
+
+        guardarAvisos(avisos);
+
+
+        // Limpiar formulario
+
+        titulo.value = "";
+
+        descripcion.value = "";
+
+
+        // Mostrar mensaje
+
+        mensaje.textContent =
+            "✅ Aviso publicado correctamente.";
+
+        mensaje.style.color =
+            "#6f4e37";
+
+
+        // Actualizar lista
+
+        mostrarAvisos();
+
+    }
+);
+
+
+
+// ========================================
+// MOSTRAR AVISOS
+// ========================================
+
+function mostrarAvisos() {
+
+    const avisos =
+        obtenerAvisos();
+
+
+    listaAvisos.innerHTML = "";
+
+
+    if (avisos.length === 0) {
+
+        listaAvisos.innerHTML = `
+
+            <div class="tarjeta">
+
+                <p>
+                    No hay avisos publicados.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    avisos.forEach(
+        function(aviso) {
+
+
+            const tarjeta =
+                document.createElement("div");
+
+
+            tarjeta.className =
+                "tarjeta";
+
+
+            tarjeta.innerHTML = `
+
+                <h3>
+                    📢 ${aviso.titulo}
+                </h3>
+
+
+                <p>
+                    ${aviso.descripcion}
+                </p>
+
+
+                <p>
+                    <strong>Fecha:</strong>
+                    ${aviso.fecha}
+                </p>
+
+
+                <div class="botones-aviso">
+
+
+                    <button
+                        type="button"
+                        class="boton"
+                        onclick="editarAviso(${aviso.id})">
+
+                        ✏️ Editar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="boton"
+                        onclick="consultarAviso(${aviso.id})">
+
+                        🔎 Consultar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="boton"
+                        onclick="eliminarAviso(${aviso.id})">
+
+                        🗑️ Eliminar
+
+                    </button>
+
+
+                </div>
+
+            `;
+
+
+            listaAvisos.appendChild(tarjeta);
+
+        }
+    );
+
+}
+
+
+
+// ========================================
+// EDITAR AVISO
+// ========================================
+
+function editarAviso(id) {
+
+    const avisos =
+        obtenerAvisos();
+
+
+    const aviso =
+        avisos.find(
+            function(aviso) {
+
+                return aviso.id === id;
+
+            }
+        );
+
+
+    if (!aviso) {
+
+        return;
+
+    }
+
+
+    const nuevoTitulo =
+        prompt(
+            "Modifica el título:",
+            aviso.titulo
+        );
+
+
+    if (nuevoTitulo === null) {
+
+        return;
+
+    }
+
+
+    const nuevaDescripcion =
+        prompt(
+            "Modifica la descripción:",
+            aviso.descripcion
+        );
+
+
+    if (nuevaDescripcion === null) {
+
+        return;
+
+    }
+
+
+    if (
+        nuevoTitulo.trim() === "" ||
+        nuevaDescripcion.trim() === ""
+    ) {
+
+        alert(
+            "El título y la descripción no pueden estar vacíos."
+        );
+
+        return;
+
+    }
+
+
+    aviso.titulo =
+        nuevoTitulo.trim();
+
+
+    aviso.descripcion =
+        nuevaDescripcion.trim();
+
+
+    guardarAvisos(avisos);
+
+
+    mostrarAvisos();
+
+}
+
+
+
+// ========================================
+// CONSULTAR AVISO
+// ========================================
+
+function consultarAviso(id) {
+
+    const avisos =
+        obtenerAvisos();
+
+
+    const aviso =
+        avisos.find(
+            function(aviso) {
+
+                return aviso.id === id;
+
+            }
+        );
+
+
+    if (!aviso) {
+
+        return;
+
+    }
+
+
+    alert(
+
+        "📢 " + aviso.titulo +
+
+        "\n\n" +
+
+        aviso.descripcion +
+
+        "\n\nFecha: " +
+
+        aviso.fecha
+
+    );
+
+}
+
+
+
+// ========================================
+// ELIMINAR AVISO
+// ========================================
+
+function eliminarAviso(id) {
+
+    const confirmar =
+        confirm(
+            "¿Estás seguro de eliminar este aviso?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    const avisos =
+        obtenerAvisos();
+
+
+    const nuevosAvisos =
+        avisos.filter(
+            function(aviso) {
+
+                return aviso.id !== id;
+
+            }
+        );
+
+
+    guardarAvisos(nuevosAvisos);
+
+
+    mostrarAvisos();
+
+}
+
+
+
+// ========================================
+// MOSTRAR AVISOS AL ABRIR
+// ========================================
+
+mostrarAvisos();
+
+</script>
+
+</body>
+
+</html>
+```

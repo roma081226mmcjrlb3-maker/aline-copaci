@@ -1,0 +1,825 @@
+/* ==========================================
+   CONFIGURACIÓN GENERAL
+========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f5eee8;
+    color: #3e2b23;
+    min-height: 100vh;
+}
+
+
+/* ==========================================
+   COLORES PRINCIPALES
+========================================== */
+
+:root {
+    --cafe-oscuro: #4a3025;
+    --cafe: #795548;
+    --cafe-claro: #a1887f;
+    --beige: #e9ddd2;
+    --fondo: #f5eee8;
+    --blanco: #ffffff;
+    --texto: #3e2b23;
+    --texto-claro: #74645b;
+    --borde: #dfd0c4;
+}
+
+
+/* ==========================================
+   PANTALLA DE LOGIN
+========================================== */
+
+.login-body {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4a3025,
+            #795548,
+            #a1887f
+        );
+}
+
+
+.login-box {
+    width: 100%;
+    max-width: 450px;
+
+    background-color: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+}
+
+
+.login-box h1 {
+    color: var(--cafe-oscuro);
+
+    font-size: 38px;
+
+    margin-bottom: 5px;
+}
+
+
+.login-box h2 {
+    color: var(--cafe);
+
+    font-size: 22px;
+
+    margin-bottom: 8px;
+}
+
+
+.login-box > p {
+    color: var(--texto-claro);
+
+    margin-bottom: 25px;
+}
+
+
+/* ==========================================
+   FORMULARIOS
+========================================== */
+
+form {
+    text-align: left;
+}
+
+
+label {
+    display: block;
+
+    margin-top: 15px;
+    margin-bottom: 7px;
+
+    color: var(--texto);
+
+    font-weight: bold;
+}
+
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 9px;
+
+    background-color: #faf8f6;
+
+    color: var(--texto);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+textarea {
+    resize: vertical;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--cafe);
+
+    box-shadow:
+        0 0 0 2px rgba(121, 85, 72, 0.12);
+}
+
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+button,
+.boton {
+    display: inline-block;
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 13px 20px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background-color: var(--cafe);
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+button:hover,
+.boton:hover {
+    background-color: var(--cafe-oscuro);
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   REGISTRO DEL LOGIN
+========================================== */
+
+.login-register {
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--borde);
+}
+
+
+.login-register p {
+    margin-bottom: 8px;
+}
+
+
+.login-register a {
+    color: var(--cafe);
+
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+
+.login-register a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.error {
+    margin-top: 15px;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background-color: #f8d7da;
+
+    color: #842029;
+
+    text-align: center;
+}
+
+
+.exito {
+    margin-top: 15px;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background-color: #d1e7dd;
+
+    color: #0f5132;
+
+    text-align: center;
+}
+
+
+/* ==========================================
+   ENCABEZADO
+========================================== */
+
+header {
+    width: 100%;
+
+    padding: 18px 7%;
+
+    background-color: var(--cafe-oscuro);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+header h1 {
+    font-size: 22px;
+}
+
+
+/* ==========================================
+   NAVEGACIÓN
+========================================== */
+
+nav {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+nav a {
+    padding: 8px 12px;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+
+nav a:hover {
+    background-color: var(--cafe);
+
+    color: white;
+}
+
+
+/* ==========================================
+   CONTENIDO PRINCIPAL
+========================================== */
+
+.contenido {
+    width: 90%;
+
+    max-width: 1150px;
+
+    margin: 0 auto;
+
+    padding: 55px 0;
+}
+
+
+.contenido h2 {
+    color: var(--cafe-oscuro);
+
+    font-size: 32px;
+
+    margin-bottom: 10px;
+}
+
+
+.contenido > p {
+    color: var(--texto-claro);
+
+    margin-bottom: 25px;
+}
+
+
+/* ==========================================
+   BIENVENIDA
+========================================== */
+
+.bienvenida {
+    padding: 40px;
+
+    margin-bottom: 35px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e9ddd2,
+            #f5eee8
+        );
+
+    border: 1px solid var(--borde);
+}
+
+
+.bienvenida h2 {
+    font-size: 36px;
+
+    margin-bottom: 12px;
+}
+
+
+.bienvenida p {
+    max-width: 700px;
+
+    color: var(--texto-claro);
+
+    font-size: 17px;
+}
+
+
+/* ==========================================
+   TARJETAS
+========================================== */
+
+.tarjetas {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 22px;
+
+    margin-top: 30px;
+}
+
+
+.tarjeta {
+    background-color: white;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    border: 1px solid var(--borde);
+
+    box-shadow:
+        0 5px 18px rgba(60, 40, 30, 0.08);
+
+    transition: 0.2s;
+}
+
+
+.tarjeta:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 24px rgba(60, 40, 30, 0.13);
+}
+
+
+.tarjeta h3 {
+    color: var(--cafe-oscuro);
+
+    margin-bottom: 12px;
+
+    font-size: 19px;
+}
+
+
+.tarjeta p {
+    color: var(--texto-claro);
+
+    margin-bottom: 10px;
+}
+
+
+.tarjeta .boton {
+    width: auto;
+
+    min-width: 130px;
+}
+
+
+/* ==========================================
+   FORMULARIO GRANDE
+========================================== */
+
+.formulario {
+    max-width: 650px;
+
+    margin: 20px auto;
+
+    padding: 35px;
+
+    background-color: white;
+
+    border-radius: 18px;
+
+    border: 1px solid var(--borde);
+
+    box-shadow:
+        0 5px 20px rgba(60, 40, 30, 0.09);
+}
+
+
+.formulario h2 {
+    margin-bottom: 8px;
+}
+
+
+.formulario > p {
+    color: var(--texto-claro);
+
+    margin-bottom: 20px;
+}
+
+
+/* ==========================================
+   REPORTES
+========================================== */
+
+.reporte-card {
+    background-color: white;
+
+    margin-top: 20px;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    border-left: 6px solid var(--cafe);
+
+    box-shadow:
+        0 4px 15px rgba(60, 40, 30, 0.08);
+}
+
+
+.reporte-card h3 {
+    color: var(--cafe-oscuro);
+
+    margin-bottom: 12px;
+}
+
+
+.reporte-card p {
+    color: var(--texto-claro);
+
+    margin: 6px 0;
+}
+
+
+/* ==========================================
+   ESTADOS DE REPORTES
+========================================== */
+
+.estado {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+
+.pendiente {
+    background-color: #fff0d5;
+
+    color: #8a5a00;
+}
+
+
+.proceso {
+    background-color: #e6def3;
+
+    color: #5b3b7a;
+}
+
+
+.resuelto {
+    background-color: #dcefdc;
+
+    color: #326532;
+}
+
+
+/* ==========================================
+   TABLAS
+========================================== */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 25px;
+
+    background-color: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+
+th {
+    background-color: var(--cafe-oscuro);
+
+    color: white;
+
+    padding: 14px;
+
+    text-align: left;
+}
+
+
+td {
+    padding: 13px;
+
+    border-bottom: 1px solid var(--borde);
+
+    color: var(--texto-claro);
+}
+
+
+tr:hover td {
+    background-color: #faf6f2;
+}
+
+
+/* ==========================================
+   AVISOS
+========================================== */
+
+.aviso {
+    background-color: white;
+
+    padding: 25px;
+
+    margin-top: 20px;
+
+    border-radius: 15px;
+
+    border-left: 5px solid var(--cafe);
+
+    box-shadow:
+        0 4px 15px rgba(60, 40, 30, 0.08);
+}
+
+
+.aviso h3 {
+    color: var(--cafe-oscuro);
+
+    margin-bottom: 8px;
+}
+
+
+.aviso p {
+    color: var(--texto-claro);
+}
+
+
+/* ==========================================
+   PIE DE PÁGINA
+========================================== */
+
+footer {
+    margin-top: 50px;
+
+    padding: 30px;
+
+    background-color: var(--cafe-oscuro);
+
+    color: white;
+
+    text-align: center;
+}
+
+
+footer p {
+    margin: 5px;
+}
+
+
+/* ==========================================
+   RESPONSIVE - TABLETS
+========================================== */
+
+@media (max-width: 900px) {
+
+    header {
+        flex-direction: column;
+
+        text-align: center;
+
+        padding: 20px;
+    }
+
+
+    nav {
+        width: 100%;
+    }
+
+
+    .tarjetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* ==========================================
+   RESPONSIVE - CELULARES
+========================================== */
+
+@media (max-width: 600px) {
+
+    .login-body {
+        padding: 15px;
+    }
+
+
+    .login-box {
+        padding: 28px 22px;
+    }
+
+
+    .login-box h1 {
+        font-size: 32px;
+    }
+
+
+    .login-box h2 {
+        font-size: 19px;
+    }
+
+
+    header {
+        padding: 15px;
+    }
+
+
+    header h1 {
+        font-size: 19px;
+    }
+
+
+    nav {
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: 4px;
+    }
+
+
+    nav a {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .contenido {
+        width: 92%;
+
+        padding: 35px 0;
+    }
+
+
+    .contenido h2 {
+        font-size: 27px;
+    }
+
+
+    .bienvenida {
+        padding: 25px;
+    }
+
+
+    .bienvenida h2 {
+        font-size: 28px;
+    }
+
+
+    .tarjetas {
+        grid-template-columns: 1fr;
+    }
+
+
+    .formulario {
+        padding: 25px 20px;
+    }
+
+
+    table {
+        font-size: 13px;
+    }
+
+
+    th,
+    td {
+        padding: 9px;
+    }
+
+}
+
+
+/* ==========================================
+   ANIMACIÓN SUAVE
+========================================== */
+
+@keyframes aparecer {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+.login-box,
+.contenido {
+    animation: aparecer 0.4s ease;
+}

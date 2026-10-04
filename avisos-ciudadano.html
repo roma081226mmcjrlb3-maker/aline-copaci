@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Ciudadano | Avisos</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Panel del Ciudadano</h1>
+
+    <nav>
+
+        <a href="ciudadano.html">
+            Inicio
+        </a>
+
+        <a href="mis-reportes.html">
+            Mis reportes
+        </a>
+
+        <a href="avisos-ciudadano.html">
+            Avisos
+        </a>
+
+        <a href="index.html">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <h2>📢 Avisos</h2>
+
+    <p>
+        Consulta los avisos publicados por el COPACI.
+    </p>
+
+    <section id="listaAvisos"></section>
+
+</main>
+
+
+<script>
+
+function mostrarAvisos() {
+
+    const lista =
+        document.getElementById("listaAvisos");
+
+    const avisos =
+        JSON.parse(
+            localStorage.getItem("avisosCOPACI")
+        ) || [];
+
+
+    lista.innerHTML = "";
+
+
+    if (avisos.length === 0) {
+
+        lista.innerHTML = `
+            <section class="tarjeta">
+                <p>
+                    No hay avisos publicados.
+                </p>
+            </section>
+        `;
+
+        return;
+    }
+
+
+    avisos.forEach(function(aviso) {
+
+        const tarjeta =
+            document.createElement("section");
+
+        tarjeta.className = "tarjeta";
+
+
+        tarjeta.innerHTML = `
+
+            <h3>
+                📢 ${aviso.titulo}
+            </h3>
+
+            <p>
+                ${aviso.descripcion}
+            </p>
+
+            <small>
+                Publicado el ${aviso.fecha}
+            </small>
+
+        `;
+
+
+        lista.appendChild(tarjeta);
+
+    });
+
+}
+
+
+mostrarAvisos();
+
+</script>
+
+</body>
+
+</html>

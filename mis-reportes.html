@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mis reportes | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>COPACI Nicolás Romero</h1>
+
+    <nav>
+
+        <a href="ciudadano.html">Inicio</a>
+
+        <a href="reporte.html">Crear reporte</a>
+
+        <a href="mis-reportes.html">Mis reportes</a>
+
+        <a href="avisos-ciudadano.html">Avisos</a>
+
+        <a href="index.html">Cerrar sesión</a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <section class="bienvenida">
+
+        <h2>Mis reportes</h2>
+
+        <p>
+            Aquí puedes consultar los reportes que has realizado
+            y conocer su estado.
+        </p>
+
+    </section>
+
+
+    <section id="listaReportes">
+
+        <!-- Los reportes aparecerán aquí -->
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =========================================
+   USUARIO ACTUAL
+========================================= */
+
+const usuarioActual =
+    localStorage.getItem("usuarioActual");
+
+
+/* =========================================
+   MOSTRAR REPORTES
+========================================= */
+
+function mostrarReportes() {
+
+    const lista =
+        document.getElementById("listaReportes");
+
+
+    /* Obtener reportes */
+
+    const reportes =
+        JSON.parse(
+            localStorage.getItem("reportes")
+        ) || [];
+
+
+    /* Filtrar únicamente los del ciudadano */
+
+    const misReportes =
+        reportes.filter(function(reporte) {
+
+            return reporte.usuario === usuarioActual;
+
+        });
+
+
+    /* Limpiar contenido */
+
+    lista.innerHTML = "";
+
+
+    /* Si no tiene reportes */
+
+    if (misReportes.length === 0) {
+
+        lista.innerHTML = `
+
+            <div class="tarjeta">
+
+                <h3>No tienes reportes todavía.</h3>
+
+                <p>
+                    Cuando realices un reporte,
+                    aparecerá aquí.
+                </p>
+
+                <a
+                    href="reporte.html"
+                    class="boton">
+
+                    Crear reporte
+
+                </a>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    /* =========================================
+       MOSTRAR CADA REPORTE
+    ========================================= */
+
+    misReportes.forEach(function(reporte) {
+
+        lista.innerHTML += `
+
+            <article class="tarjeta">
+
+                <h3>
+                    ${reporte.asunto}
+                </h3>
+
+                <p>
+                    <strong>Descripción:</strong>
+                    ${reporte.descripcion}
+                </p>
+
+                <p>
+                    <strong>Ubicación:</strong>
+                    ${reporte.ubicacion}
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+
+                    <span class="estado">
+                        ${reporte.estado}
+                    </span>
+
+                </p>
+
+            </article>
+
+        `;
+
+    });
+
+}
+
+
+/* Mostrar los reportes al abrir */
+
+mostrarReportes();
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crear cuenta | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="login-body">
+
+    <div class="login-box">
+
+        <h1>COPACI</h1>
+
+        <h2>Crear cuenta ciudadana</h2>
+
+        <p>Registra tus datos para utilizar el sistema.</p>
+
+
+        <form id="registroForm">
+
+            <label>Nombre completo</label>
+
+            <input
+                type="text"
+                id="nombre"
+                required
+            >
+
+
+            <label>Usuario</label>
+
+            <input
+                type="text"
+                id="usuario"
+                required
+            >
+
+
+            <label>Correo electrónico</label>
+
+            <input
+                type="email"
+                id="correo"
+                required
+            >
+
+
+            <label>Contraseña</label>
+
+            <input
+                type="password"
+                id="password"
+                required
+            >
+
+
+            <label>Confirmar contraseña</label>
+
+            <input
+                type="password"
+                id="confirmar"
+                required
+            >
+
+
+            <button type="submit">
+                Crear cuenta
+            </button>
+
+        </form>
+
+
+        <p id="mensaje"></p>
+
+
+        <div class="login-register">
+
+            <p>¿Ya tienes una cuenta?</p>
+
+            <a href="index.html">
+                Regresar al inicio de sesión
+            </a>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+document.getElementById("registroForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const nombre =
+        document.getElementById("nombre").value;
+
+    const usuario =
+        document.getElementById("usuario").value;
+
+    const correo =
+        document.getElementById("correo").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const confirmar =
+        document.getElementById("confirmar").value;
+
+    const mensaje =
+        document.getElementById("mensaje");
+
+
+    if (password !== confirmar) {
+
+        mensaje.textContent =
+            "Las contraseñas no coinciden.";
+
+        mensaje.className = "error";
+
+        return;
+    }
+
+
+    let ciudadanos =
+        JSON.parse(localStorage.getItem("ciudadanos")) || [];
+
+
+    const existe =
+        ciudadanos.some(function(ciudadano) {
+
+            return ciudadano.usuario === usuario;
+
+        });
+
+
+    if (existe) {
+
+        mensaje.textContent =
+            "Ese nombre de usuario ya existe.";
+
+        mensaje.className = "error";
+
+        return;
+    }
+
+
+    const nuevoCiudadano = {
+
+        nombre: nombre,
+        usuario: usuario,
+        correo: correo,
+        password: password
+
+    };
+
+
+    ciudadanos.push(nuevoCiudadano);
+
+
+    localStorage.setItem(
+        "ciudadanos",
+        JSON.stringify(ciudadanos)
+    );
+
+
+    mensaje.textContent =
+        "Cuenta creada correctamente.";
+
+    mensaje.className = "exito";
+
+
+    setTimeout(function() {
+
+        window.location.href = "index.html";
+
+    }, 1500);
+
+});
+
+</script>
+
+</body>
+</html>

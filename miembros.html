@@ -1,0 +1,307 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Miembros COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Miembros del COPACI</h1>
+
+    <nav>
+
+        <a href="admin.html">Inicio</a>
+        <a href="usuarios.html">Usuarios</a>
+        <a href="miembros.html">Miembros</a>
+        <a href="avisos.html">Avisos</a>
+        <a href="index.html">Cerrar sesión</a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <h2>Administración de miembros</h2>
+
+
+    <!-- FORMULARIO PARA DAR DE ALTA -->
+
+    <div class="formulario">
+
+        <form id="formularioMiembro">
+
+            <label>Nombre del miembro</label>
+
+            <input
+                type="text"
+                id="nombre"
+                placeholder="Nombre completo"
+                required
+            >
+
+
+            <label>Cargo</label>
+
+            <input
+                type="text"
+                id="cargo"
+                placeholder="Cargo dentro del COPACI"
+                required
+            >
+
+
+            <button type="submit">
+                Dar de alta
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <h2>Miembros registrados</h2>
+
+    <div id="miembros"></div>
+
+</main>
+
+
+<script>
+
+let miembros =
+    JSON.parse(localStorage.getItem("miembros")) || [];
+
+
+const formulario =
+    document.getElementById("formularioMiembro");
+
+const contenedor =
+    document.getElementById("miembros");
+
+
+
+/* DAR DE ALTA */
+
+formulario.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const nombre =
+        document.getElementById("nombre").value;
+
+    const cargo =
+        document.getElementById("cargo").value;
+
+
+    const nuevoMiembro = {
+
+        nombre: nombre,
+        cargo: cargo
+
+    };
+
+
+    miembros.push(nuevoMiembro);
+
+
+    localStorage.setItem(
+        "miembros",
+        JSON.stringify(miembros)
+    );
+
+
+    formulario.reset();
+
+
+    mostrarMiembros();
+
+});
+
+
+
+/* MOSTRAR MIEMBROS */
+
+function mostrarMiembros() {
+
+    contenedor.innerHTML = "";
+
+
+    if (miembros.length === 0) {
+
+        contenedor.innerHTML =
+            "<p>No hay miembros registrados.</p>";
+
+        return;
+
+    }
+
+
+    miembros.forEach(function(miembro, indice) {
+
+        const tarjeta =
+            document.createElement("div");
+
+
+        tarjeta.className = "reporte-card";
+
+
+        tarjeta.innerHTML = `
+
+            <h3>${miembro.nombre}</h3>
+
+            <p>
+                <strong>Cargo:</strong>
+                ${miembro.cargo}
+            </p>
+
+
+            <div class="botones-miembro">
+
+                <button
+                    onclick="editarMiembro(${indice})">
+                    Editar
+                </button>
+
+
+                <button
+                    onclick="consultarMiembro(${indice})">
+                    Consultar
+                </button>
+
+
+                <button
+                    onclick="darDeBaja(${indice})">
+                    Dar de baja
+                </button>
+
+            </div>
+
+        `;
+
+
+        contenedor.appendChild(tarjeta);
+
+    });
+
+}
+
+
+
+/* EDITAR */
+
+function editarMiembro(indice) {
+
+    const nuevoNombre =
+        prompt(
+            "Modifica el nombre:",
+            miembros[indice].nombre
+        );
+
+
+    if (nuevoNombre === null) {
+        return;
+    }
+
+
+    const nuevoCargo =
+        prompt(
+            "Modifica el cargo:",
+            miembros[indice].cargo
+        );
+
+
+    if (nuevoCargo === null) {
+        return;
+    }
+
+
+    miembros[indice].nombre =
+        nuevoNombre;
+
+    miembros[indice].cargo =
+        nuevoCargo;
+
+
+    localStorage.setItem(
+        "miembros",
+        JSON.stringify(miembros)
+    );
+
+
+    mostrarMiembros();
+
+}
+
+
+
+/* CONSULTAR */
+
+function consultarMiembro(indice) {
+
+    alert(
+        "Nombre: " +
+        miembros[indice].nombre +
+        "\n\nCargo: " +
+        miembros[indice].cargo
+    );
+
+}
+
+
+
+/* DAR DE BAJA */
+
+function darDeBaja(indice) {
+
+    const confirmar =
+        confirm(
+            "¿Estás seguro de dar de baja a este miembro?"
+        );
+
+
+    if (confirmar) {
+
+        miembros.splice(indice, 1);
+
+
+        localStorage.setItem(
+            "miembros",
+            JSON.stringify(miembros)
+        );
+
+
+        mostrarMiembros();
+
+    }
+
+}
+
+
+
+/* MOSTRAR AL ABRIR LA PÁGINA */
+
+mostrarMiembros();
+
+</script>
+
+</body>
+
+</html>
+```

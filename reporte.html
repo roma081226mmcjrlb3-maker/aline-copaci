@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Crear reporte | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>COPACI Nicolás Romero</h1>
+
+    <nav>
+
+        <a href="ciudadano.html">Inicio</a>
+
+        <a href="reporte.html">Crear reporte</a>
+
+        <a href="mis-reportes.html">Mis reportes</a>
+
+        <a href="avisos-ciudadano.html">Avisos</a>
+
+        <a href="index.html">Cerrar sesión</a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <section class="bienvenida">
+
+        <h2>Crear reporte</h2>
+
+        <p>
+            Describe el problema que deseas reportar
+            al COPACI.
+        </p>
+
+    </section>
+
+
+    <section class="tarjeta">
+
+        <form id="reporteForm">
+
+            <label for="asunto">
+                Asunto del reporte:
+            </label>
+
+            <input
+                type="text"
+                id="asunto"
+                placeholder="Ejemplo: Lámpara sin funcionar"
+                required
+            >
+
+
+            <label for="descripcion">
+                Descripción:
+            </label>
+
+            <textarea
+                id="descripcion"
+                rows="5"
+                placeholder="Describe el problema..."
+                required
+            ></textarea>
+
+
+            <label for="ubicacion">
+                Ubicación:
+            </label>
+
+            <input
+                type="text"
+                id="ubicacion"
+                placeholder="¿Dónde ocurre el problema?"
+                required
+            >
+
+
+            <button type="submit" class="boton">
+                Enviar reporte
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =========================================
+   OBTENER EL CIUDADANO QUE INICIÓ SESIÓN
+========================================= */
+
+const usuarioActual =
+    localStorage.getItem("usuarioActual");
+
+
+/* =========================================
+   GUARDAR REPORTE
+========================================= */
+
+document
+.getElementById("reporteForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    /* Obtener información del formulario */
+
+    const asunto =
+        document.getElementById("asunto").value.trim();
+
+    const descripcion =
+        document.getElementById("descripcion").value.trim();
+
+    const ubicacion =
+        document.getElementById("ubicacion").value.trim();
+
+
+    /* Obtener reportes que ya existen */
+
+    let reportes =
+        JSON.parse(
+            localStorage.getItem("reportes")
+        ) || [];
+
+
+    /* Crear nuevo reporte */
+
+    const nuevoReporte = {
+
+        id: Date.now(),
+
+        usuario: usuarioActual,
+
+        asunto: asunto,
+
+        descripcion: descripcion,
+
+        ubicacion: ubicacion,
+
+        estado: "Pendiente"
+
+    };
+
+
+    /* Agregar el reporte */
+
+    reportes.push(nuevoReporte);
+
+
+    /* Guardarlo */
+
+    localStorage.setItem(
+        "reportes",
+        JSON.stringify(reportes)
+    );
+
+
+    alert(
+        "¡Reporte enviado correctamente!"
+    );
+
+
+    /* Limpiar formulario */
+
+    document
+    .getElementById("reporteForm")
+    .reset();
+
+
+    /* Ir a Mis reportes */
+
+    window.location.href =
+        "mis-reportes.html";
+
+});
+
+</script>
+
+</body>
+
+</html>

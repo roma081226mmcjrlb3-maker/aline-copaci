@@ -1,0 +1,255 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Usuarios | COPACI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>Administración de usuarios</h1>
+
+    <nav>
+
+        <a href="admin.html">Inicio</a>
+        <a href="usuarios.html">Usuarios</a>
+        <a href="miembros.html">Miembros</a>
+        <a href="avisos.html">Avisos</a>
+        <a href="index.html">Cerrar sesión</a>
+
+    </nav>
+
+</header>
+
+
+<main class="contenido">
+
+    <h2>Ciudadanos registrados</h2>
+
+    <div id="usuarios"></div>
+
+</main>
+
+
+<script>
+
+
+/* OBTENER USUARIOS */
+
+let ciudadanos =
+    JSON.parse(localStorage.getItem("ciudadanos")) || [];
+
+
+const contenedor =
+    document.getElementById("usuarios");
+
+
+
+/* MOSTRAR USUARIOS */
+
+function mostrarUsuarios() {
+
+    contenedor.innerHTML = "";
+
+
+    if (ciudadanos.length === 0) {
+
+        contenedor.innerHTML =
+            "<p>No hay ciudadanos registrados.</p>";
+
+        return;
+
+    }
+
+
+    ciudadanos.forEach(function(ciudadano, indice) {
+
+        const tarjeta =
+            document.createElement("div");
+
+
+        tarjeta.className = "reporte-card";
+
+
+        tarjeta.innerHTML = `
+
+            <h3>${ciudadano.nombre}</h3>
+
+            <p>
+                <strong>Usuario:</strong>
+                ${ciudadano.usuario}
+            </p>
+
+            <p>
+                <strong>Correo:</strong>
+                ${ciudadano.correo}
+            </p>
+
+
+            <div class="botones-usuario">
+
+                <button
+                    onclick="editarUsuario(${indice})">
+                    Editar
+                </button>
+
+
+                <button
+                    onclick="consultarUsuario(${indice})">
+                    Consultar
+                </button>
+
+
+                <button
+                    onclick="eliminarUsuario(${indice})">
+                    Eliminar
+                </button>
+
+            </div>
+
+        `;
+
+
+        contenedor.appendChild(tarjeta);
+
+    });
+
+}
+
+
+
+/* EDITAR USUARIO */
+
+function editarUsuario(indice) {
+
+    const nuevoNombre =
+        prompt(
+            "Modifica el nombre:",
+            ciudadanos[indice].nombre
+        );
+
+
+    if (nuevoNombre === null) {
+        return;
+    }
+
+
+    const nuevoUsuario =
+        prompt(
+            "Modifica el usuario:",
+            ciudadanos[indice].usuario
+        );
+
+
+    if (nuevoUsuario === null) {
+        return;
+    }
+
+
+    const nuevoCorreo =
+        prompt(
+            "Modifica el correo:",
+            ciudadanos[indice].correo
+        );
+
+
+    if (nuevoCorreo === null) {
+        return;
+    }
+
+
+    ciudadanos[indice].nombre =
+        nuevoNombre;
+
+    ciudadanos[indice].usuario =
+        nuevoUsuario;
+
+    ciudadanos[indice].correo =
+        nuevoCorreo;
+
+
+    localStorage.setItem(
+        "ciudadanos",
+        JSON.stringify(ciudadanos)
+    );
+
+
+    mostrarUsuarios();
+
+}
+
+
+
+/* CONSULTAR USUARIO */
+
+function consultarUsuario(indice) {
+
+    alert(
+
+        "Nombre: " +
+        ciudadanos[indice].nombre +
+
+        "\n\nUsuario: " +
+        ciudadanos[indice].usuario +
+
+        "\n\nCorreo: " +
+        ciudadanos[indice].correo
+
+    );
+
+}
+
+
+
+/* ELIMINAR USUARIO */
+
+function eliminarUsuario(indice) {
+
+    const confirmar =
+        confirm(
+            "¿Estás seguro de eliminar este usuario?"
+        );
+
+
+    if (confirmar) {
+
+        ciudadanos.splice(indice, 1);
+
+
+        localStorage.setItem(
+            "ciudadanos",
+            JSON.stringify(ciudadanos)
+        );
+
+
+        mostrarUsuarios();
+
+    }
+
+}
+
+
+
+/* MOSTRAR AL ABRIR LA PÁGINA */
+
+mostrarUsuarios();
+
+</script>
+
+</body>
+
+</html>
+```
