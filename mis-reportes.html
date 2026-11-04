@@ -5,12 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Mis reportes | COPACI</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="solicitudes.js" defer></script>
 
 </head>
 
@@ -59,129 +60,5 @@
 
 </main>
 
-
-<script>
-
-/* =========================================
-   USUARIO ACTUAL
-========================================= */
-
-const usuarioActual =
-    localStorage.getItem("usuarioActual");
-
-
-/* =========================================
-   MOSTRAR REPORTES
-========================================= */
-
-function mostrarReportes() {
-
-    const lista =
-        document.getElementById("listaReportes");
-
-
-    /* Obtener reportes */
-
-    const reportes =
-        JSON.parse(
-            localStorage.getItem("reportes")
-        ) || [];
-
-
-    /* Filtrar únicamente los del ciudadano */
-
-    const misReportes =
-        reportes.filter(function(reporte) {
-
-            return reporte.usuario === usuarioActual;
-
-        });
-
-
-    /* Limpiar contenido */
-
-    lista.innerHTML = "";
-
-
-    /* Si no tiene reportes */
-
-    if (misReportes.length === 0) {
-
-        lista.innerHTML = `
-
-            <div class="tarjeta">
-
-                <h3>No tienes reportes todavía.</h3>
-
-                <p>
-                    Cuando realices un reporte,
-                    aparecerá aquí.
-                </p>
-
-                <a
-                    href="reporte.html"
-                    class="boton">
-
-                    Crear reporte
-
-                </a>
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    /* =========================================
-       MOSTRAR CADA REPORTE
-    ========================================= */
-
-    misReportes.forEach(function(reporte) {
-
-        lista.innerHTML += `
-
-            <article class="tarjeta">
-
-                <h3>
-                    ${reporte.asunto}
-                </h3>
-
-                <p>
-                    <strong>Descripción:</strong>
-                    ${reporte.descripcion}
-                </p>
-
-                <p>
-                    <strong>Ubicación:</strong>
-                    ${reporte.ubicacion}
-                </p>
-
-                <p>
-                    <strong>Estado:</strong>
-
-                    <span class="estado">
-                        ${reporte.estado}
-                    </span>
-
-                </p>
-
-            </article>
-
-        `;
-
-    });
-
-}
-
-
-/* Mostrar los reportes al abrir */
-
-mostrarReportes();
-
-</script>
-
 </body>
-
 </html>
