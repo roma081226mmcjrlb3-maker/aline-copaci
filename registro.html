@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Crear cuenta | COPACI</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <script src="registro.js" defer></script>
+
 </head>
 
 <body class="login-body">
@@ -12,7 +19,9 @@
     <div class="login-box">
 
         <h1>COPACI</h1>
+
         <h2>Crear cuenta ciudadana</h2>
+
         <p>Registra tus datos para utilizar el sistema.</p>
 
         <form id="registroForm">
@@ -42,74 +51,14 @@
         <p id="mensaje"></p>
 
         <div class="login-register">
+
             <p>¿Ya tienes una cuenta?</p>
+
             <a href="index.html">Regresar al inicio de sesión</a>
+
         </div>
 
     </div>
-
-<script>
-
-document.getElementById("registroForm").addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    const nombre = document.getElementById("nombre").value.trim();
-    const direccion = document.getElementById("direccion").value.trim();
-    const usuario = document.getElementById("usuario").value.trim();
-    const correo = document.getElementById("correo").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmar = document.getElementById("confirmar").value;
-
-    const mensaje = document.getElementById("mensaje");
-
-    if (!nombre || !direccion || !usuario || !correo || !password || !confirmar) {
-        mensaje.textContent = "Completa todos los campos.";
-        mensaje.className = "error";
-        return;
-    }
-
-    if (password !== confirmar) {
-        mensaje.textContent = "Las contraseñas no coinciden.";
-        mensaje.className = "error";
-        return;
-    }
-
-    let ciudadanos = JSON.parse(localStorage.getItem("ciudadanos")) || [];
-
-    const existe = ciudadanos.some(function(ciudadano) {
-        return ciudadano.usuario.toLowerCase() === usuario.toLowerCase()
-        || ciudadano.correo.toLowerCase() === correo.toLowerCase();
-    });
-
-    if (existe) {
-        mensaje.textContent = "El usuario o correo ya está registrado.";
-        mensaje.className = "error";
-        return;
-    }
-
-    const nuevoCiudadano = {
-        nombre: nombre,
-        direccion: direccion,
-        usuario: usuario,
-        correo: correo,
-        password: password
-    };
-
-    ciudadanos.push(nuevoCiudadano);
-
-    localStorage.setItem("ciudadanos", JSON.stringify(ciudadanos));
-
-    mensaje.textContent = "Cuenta creada correctamente.";
-    mensaje.className = "exito";
-
-    setTimeout(function() {
-        window.location.href = "index.html";
-    }, 1500);
-
-});
-
-</script>
 
 </body>
 </html>
