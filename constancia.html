@@ -2,16 +2,13 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Constancias | COPACI</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <script src="solicitudes.js" defer></script>
-
+    <script src="apartadoB.js" defer></script>
 </head>
 
 <body>
@@ -21,14 +18,12 @@
     <h1>COPACI Nicolás Romero</h1>
 
     <nav>
-
         <a href="ciudadano.html">Inicio</a>
         <a href="reporte.html">Crear reporte</a>
         <a href="mis-reportes.html">Mis reportes</a>
         <a href="constancia.html">Constancias</a>
         <a href="avisos-ciudadano.html">Avisos</a>
         <a href="index.html">Cerrar sesión</a>
-
     </nav>
 
 </header>
@@ -46,17 +41,13 @@
 
     </section>
 
-
     <section class="tarjeta">
 
         <h3>Datos del ciudadano</h3>
 
         <p><strong>Nombre:</strong> <span id="nombre"></span></p>
-
         <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-
         <p><strong>Usuario:</strong> <span id="usuario"></span></p>
-
         <p><strong>Correo:</strong> <span id="correo"></span></p>
 
         <button class="boton" onclick="solicitarConstancia()">
@@ -66,7 +57,6 @@
         <p id="mensaje"></p>
 
     </section>
-
 
     <section id="comprobante" class="tarjeta" style="display:none;">
 
@@ -87,13 +77,9 @@
             </h2>
 
             <p><strong>Folio:</strong> <span id="folio"></span></p>
-
             <p><strong>Fecha de solicitud:</strong> <span id="fecha"></span></p>
-
             <p><strong>Nombre:</strong> <span id="nombreComprobante"></span></p>
-
             <p><strong>Dirección:</strong> <span id="direccionComprobante"></span></p>
-
             <p><strong>Correo:</strong> <span id="correoComprobante"></span></p>
 
             <p>
@@ -122,10 +108,8 @@
             </div>
 
             <p style="text-align:center; margin-top:25px;">
-
                 Este documento es un comprobante de solicitud,
                 no una constancia oficial de residencia.
-
             </p>
 
         </div>
@@ -138,37 +122,28 @@
 
 </main>
 
-
 <style>
-
 @media print {
 
     header,
     .bienvenida,
     main > section:first-of-type,
     #comprobante button {
-
         display: none !important;
-
     }
 
     body {
-
         background: white !important;
         color: black !important;
-
     }
 
     #comprobante {
-
         display: block !important;
         box-shadow: none !important;
         border: none !important;
-
     }
 
 }
-
 </style>
 
 </body>
