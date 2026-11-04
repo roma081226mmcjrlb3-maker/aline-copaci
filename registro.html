@@ -2,16 +2,13 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Crear cuenta | COPACI</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <script src="registro.js" defer></script>
-
+    <script src="apartadoA.js" defer></script>
 </head>
 
 <body class="login-body">
@@ -19,29 +16,28 @@
     <div class="login-box">
 
         <h1>COPACI</h1>
-
         <h2>Crear cuenta ciudadana</h2>
 
         <p>Registra tus datos para utilizar el sistema.</p>
 
         <form id="registroForm">
 
-            <label>Nombre completo</label>
+            <label for="nombre">Nombre completo</label>
             <input type="text" id="nombre" required>
 
-            <label>Dirección o calle</label>
+            <label for="direccion">Dirección o calle</label>
             <input type="text" id="direccion" required>
 
-            <label>Usuario</label>
+            <label for="usuario">Usuario</label>
             <input type="text" id="usuario" required>
 
-            <label>Correo electrónico</label>
+            <label for="correo">Correo electrónico</label>
             <input type="email" id="correo" required>
 
-            <label>Contraseña</label>
+            <label for="password">Contraseña</label>
             <input type="password" id="password" required>
 
-            <label>Confirmar contraseña</label>
+            <label for="confirmar">Confirmar contraseña</label>
             <input type="password" id="confirmar" required>
 
             <button type="submit">Crear cuenta</button>
