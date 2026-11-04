@@ -1,5 +1,5 @@
 // ========================================
-// FUNCION PARA LEER DATOS DE LOCALSTORAGE
+// OBTENER DATOS DE LOCALSTORAGE
 // ========================================
 
 function obtenerDatos(clave) {
@@ -8,7 +8,7 @@ function obtenerDatos(clave) {
 
         const datos = JSON.parse(localStorage.getItem(clave));
 
-        return datos || [];
+        return Array.isArray(datos) ? datos : [];
 
     } catch (error) {
 
@@ -92,11 +92,7 @@ window.solicitarConstancia = function() {
         return;
     }
 
-    let constancias = obtenerDatos("constancias");
-
-    if (!Array.isArray(constancias)) {
-        constancias = [];
-    }
+    const constancias = obtenerDatos("constancias");
 
     const folio =
         "COPACI-" + Date.now().toString().slice(-8);
@@ -158,6 +154,13 @@ if (reporteForm) {
         const usuarioActual =
             localStorage.getItem("usuarioActual");
 
+        if (!usuarioActual) {
+
+            alert("Inicia sesión para enviar un reporte.");
+            return;
+
+        }
+
         const asunto =
             document.getElementById("asunto").value.trim();
 
@@ -167,17 +170,7 @@ if (reporteForm) {
         const ubicacion =
             document.getElementById("ubicacion").value.trim();
 
-
-        // OBTENER REPORTES ANTERIORES
-
-        let reportes = obtenerDatos("reportes");
-
-        if (!Array.isArray(reportes)) {
-            reportes = [];
-        }
-
-
-        // CREAR NUEVO REPORTE
+        const reportes = obtenerDatos("reportes");
 
         const nuevoReporte = {
 
@@ -190,9 +183,6 @@ if (reporteForm) {
 
         };
 
-
-        // GUARDAR REPORTE
-
         reportes.push(nuevoReporte);
 
         localStorage.setItem(
@@ -200,19 +190,112 @@ if (reporteForm) {
             JSON.stringify(reportes)
         );
 
-
         alert("¡Reporte enviado correctamente!");
 
-
-        // LIMPIAR FORMULARIO
-
         reporteForm.reset();
-
-
-        // IR A MIS REPORTES
 
         window.location.href = "mis-reportes.html";
 
     });
 
 }
+
+
+// ========================================
+// MOSTRAR MIS REPORTES
+// ========================================
+
+function mostrarReportes() {
+
+    const lista = document.getElementById("listaReportes");
+
+    if (!lista) {
+        return;
+    }
+
+    const usuarioActual =
+        localStorage.getItem("usuarioActual");
+
+    const reportes = obtenerDatos("reportes");
+
+    const misReportes = reportes.filter(function(reporte) {
+
+        return reporte && reporte.usuario === usuarioActual;
+
+    });
+
+    lista.innerHTML = "";
+
+    if (misReportes.length === 0) {
+
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "tarjeta";
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = "No tienes reportes todavía.";
+
+        const descripcion = document.createElement("p");
+        descripcion.textContent =
+            "Cuando realices un reporte, aparecerá aquí.";
+
+        const enlace = document.createElement("a");
+        enlace.href = "reporte.html";
+        enlace.className = "boton";
+        enlace.textContent = "Crear reporte";
+
+        tarjeta.appendChild(titulo);
+        tarjeta.appendChild(descripcion);
+        tarjeta.appendChild(enlace);
+
+        lista.appendChild(tarjeta);
+
+        return;
+
+    }
+
+
+    // MOSTRAR CADA REPORTE
+
+    misReportes.forEach(function(reporte) {
+
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "tarjeta";
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = reporte.asunto || "Sin asunto";
+
+        const descripcion = document.createElement("p");
+        descripcion.textContent =
+            "Descripción: " + (reporte.descripcion || "");
+
+        const ubicacion = document.createElement("p");
+        ubicacion.textContent =
+            "Ubicación: " + (reporte.ubicacion || "");
+
+        const estado = document.createElement("p");
+
+        const textoEstado = document.createElement("strong");
+        textoEstado.textContent = "Estado: ";
+
+        const valorEstado = document.createElement("span");
+        valorEstado.className = "estado";
+        valorEstado.textContent = reporte.estado || "Pendiente";
+
+        estado.appendChild(textoEstado);
+        estado.appendChild(valorEstado);
+
+        tarjeta.appendChild(titulo);
+        tarjeta.appendChild(descripcion);
+        tarjeta.appendChild(ubicacion);
+        tarjeta.appendChild(estado);
+
+        lista.appendChild(tarjeta);
+
+    });
+
+}
+
+
+// EJECUTAR CONSULTA DE REPORTES
+
+mostrarReportes();
