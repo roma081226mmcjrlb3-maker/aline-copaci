@@ -5,12 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Crear reporte | COPACI</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="solicitudes.js" defer></script>
 
 </head>
 
@@ -66,7 +67,6 @@
                 required
             >
 
-
             <label for="descripcion">
                 Descripción:
             </label>
@@ -77,7 +77,6 @@
                 placeholder="Describe el problema..."
                 required
             ></textarea>
-
 
             <label for="ubicacion">
                 Ubicación:
@@ -90,7 +89,6 @@
                 required
             >
 
-
             <button type="submit" class="boton">
                 Enviar reporte
             </button>
@@ -101,101 +99,5 @@
 
 </main>
 
-
-<script>
-
-/* =========================================
-   OBTENER EL CIUDADANO QUE INICIÓ SESIÓN
-========================================= */
-
-const usuarioActual =
-    localStorage.getItem("usuarioActual");
-
-
-/* =========================================
-   GUARDAR REPORTE
-========================================= */
-
-document
-.getElementById("reporteForm")
-.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-
-    /* Obtener información del formulario */
-
-    const asunto =
-        document.getElementById("asunto").value.trim();
-
-    const descripcion =
-        document.getElementById("descripcion").value.trim();
-
-    const ubicacion =
-        document.getElementById("ubicacion").value.trim();
-
-
-    /* Obtener reportes que ya existen */
-
-    let reportes =
-        JSON.parse(
-            localStorage.getItem("reportes")
-        ) || [];
-
-
-    /* Crear nuevo reporte */
-
-    const nuevoReporte = {
-
-        id: Date.now(),
-
-        usuario: usuarioActual,
-
-        asunto: asunto,
-
-        descripcion: descripcion,
-
-        ubicacion: ubicacion,
-
-        estado: "Pendiente"
-
-    };
-
-
-    /* Agregar el reporte */
-
-    reportes.push(nuevoReporte);
-
-
-    /* Guardarlo */
-
-    localStorage.setItem(
-        "reportes",
-        JSON.stringify(reportes)
-    );
-
-
-    alert(
-        "¡Reporte enviado correctamente!"
-    );
-
-
-    /* Limpiar formulario */
-
-    document
-    .getElementById("reporteForm")
-    .reset();
-
-
-    /* Ir a Mis reportes */
-
-    window.location.href =
-        "mis-reportes.html";
-
-});
-
-</script>
-
 </body>
-
 </html>
