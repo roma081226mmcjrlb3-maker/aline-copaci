@@ -1,4 +1,27 @@
-// OBTENER DATOS DEL CIUDADANO
+// ========================================
+// FUNCION PARA LEER DATOS DE LOCALSTORAGE
+// ========================================
+
+function obtenerDatos(clave) {
+
+    try {
+
+        const datos = JSON.parse(localStorage.getItem(clave));
+
+        return datos || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+// ========================================
+// DATOS DEL CIUDADANO
+// ========================================
 
 let ciudadano = null;
 
@@ -14,26 +37,11 @@ try {
 
 }
 
-
-// BUSCAR CIUDADANO SI NO HAY DATOS GUARDADOS
-
 if (!ciudadano) {
 
     const usuarioActual = localStorage.getItem("usuarioActual");
 
-    let ciudadanos = [];
-
-    try {
-
-        ciudadanos = JSON.parse(
-            localStorage.getItem("ciudadanos")
-        ) || [];
-
-    } catch (error) {
-
-        ciudadanos = [];
-
-    }
+    const ciudadanos = obtenerDatos("ciudadanos");
 
     ciudadano = ciudadanos.find(function(persona) {
 
@@ -44,31 +52,39 @@ if (!ciudadano) {
 }
 
 
-// MOSTRAR DATOS DEL CIUDADANO
+// ========================================
+// MOSTRAR DATOS EN CONSTANCIAS
+// ========================================
 
-if (ciudadano) {
+if (document.getElementById("nombre")) {
 
-    document.getElementById("nombre").textContent =
-        ciudadano.nombre || "";
+    if (ciudadano) {
 
-    document.getElementById("direccion").textContent =
-        ciudadano.direccion || "";
+        document.getElementById("nombre").textContent =
+            ciudadano.nombre || "";
 
-    document.getElementById("usuario").textContent =
-        ciudadano.usuario || "";
+        document.getElementById("direccion").textContent =
+            ciudadano.direccion || "";
 
-    document.getElementById("correo").textContent =
-        ciudadano.correo || "";
+        document.getElementById("usuario").textContent =
+            ciudadano.usuario || "";
 
-} else {
+        document.getElementById("correo").textContent =
+            ciudadano.correo || "";
 
-    document.getElementById("mensaje").textContent =
-        "No se encontraron los datos del ciudadano. Inicia sesión nuevamente.";
+    } else {
+
+        document.getElementById("mensaje").textContent =
+            "No se encontraron los datos del ciudadano. Inicia sesión nuevamente.";
+
+    }
 
 }
 
 
+// ========================================
 // GENERAR SOLICITUD DE CONSTANCIA
+// ========================================
 
 window.solicitarConstancia = function() {
 
@@ -76,34 +92,16 @@ window.solicitarConstancia = function() {
         return;
     }
 
-    let constancias = [];
+    let constancias = obtenerDatos("constancias");
 
-    try {
-
-        constancias = JSON.parse(
-            localStorage.getItem("constancias")
-        ) || [];
-
-        if (!Array.isArray(constancias)) {
-            constancias = [];
-        }
-
-    } catch (error) {
-
+    if (!Array.isArray(constancias)) {
         constancias = [];
-
     }
-
-
-    // GENERAR FOLIO Y FECHA
 
     const folio =
         "COPACI-" + Date.now().toString().slice(-8);
 
     const fecha = new Date().toLocaleDateString("es-MX");
-
-
-    // CREAR SOLICITUD
 
     const solicitud = {
 
@@ -117,18 +115,12 @@ window.solicitarConstancia = function() {
 
     };
 
-
-    // GUARDAR SOLICITUD
-
     constancias.push(solicitud);
 
     localStorage.setItem(
         "constancias",
         JSON.stringify(constancias)
     );
-
-
-    // MOSTRAR DATOS EN EL COMPROBANTE
 
     document.getElementById("folio").textContent = folio;
 
@@ -143,12 +135,84 @@ window.solicitarConstancia = function() {
     document.getElementById("correoComprobante").textContent =
         ciudadano.correo || "";
 
-
-    // MOSTRAR COMPROBANTE
-
     document.getElementById("comprobante").style.display = "block";
 
     document.getElementById("mensaje").textContent =
         "¡Tu solicitud se generó correctamente!";
 
 };
+
+
+// ========================================
+// GUARDAR REPORTE
+// ========================================
+
+const reporteForm = document.getElementById("reporteForm");
+
+if (reporteForm) {
+
+    reporteForm.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const usuarioActual =
+            localStorage.getItem("usuarioActual");
+
+        const asunto =
+            document.getElementById("asunto").value.trim();
+
+        const descripcion =
+            document.getElementById("descripcion").value.trim();
+
+        const ubicacion =
+            document.getElementById("ubicacion").value.trim();
+
+
+        // OBTENER REPORTES ANTERIORES
+
+        let reportes = obtenerDatos("reportes");
+
+        if (!Array.isArray(reportes)) {
+            reportes = [];
+        }
+
+
+        // CREAR NUEVO REPORTE
+
+        const nuevoReporte = {
+
+            id: Date.now(),
+            usuario: usuarioActual,
+            asunto: asunto,
+            descripcion: descripcion,
+            ubicacion: ubicacion,
+            estado: "Pendiente"
+
+        };
+
+
+        // GUARDAR REPORTE
+
+        reportes.push(nuevoReporte);
+
+        localStorage.setItem(
+            "reportes",
+            JSON.stringify(reportes)
+        );
+
+
+        alert("¡Reporte enviado correctamente!");
+
+
+        // LIMPIAR FORMULARIO
+
+        reporteForm.reset();
+
+
+        // IR A MIS REPORTES
+
+        window.location.href = "mis-reportes.html";
+
+    });
+
+}
