@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constancias | COPACI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>COPACI Nicolás Romero</h1>
+
+    <nav>
+        <a href="ciudadano.html">Inicio</a>
+        <a href="reporte.html">Crear reporte</a>
+        <a href="mis-reportes.html">Mis reportes</a>
+        <a href="constancia.html">Constancias</a>
+        <a href="avisos-ciudadano.html">Avisos</a>
+        <a href="index.html">Cerrar sesión</a>
+    </nav>
+</header>
+
+<main class="contenido">
+
+    <section class="bienvenida">
+        <h2>Solicitud de constancia de residencia</h2>
+        <p>
+            Completa tu solicitud para generar un comprobante
+            digital con un folio de seguimiento.
+        </p>
+    </section>
+
+    <section class="tarjeta">
+
+        <h3>Datos del ciudadano</h3>
+
+        <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+        <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+        <p><strong>Usuario:</strong> <span id="usuario"></span></p>
+        <p><strong>Correo:</strong> <span id="correo"></span></p>
+
+        <button class="boton" onclick="solicitarConstancia()">
+            Generar solicitud
+        </button>
+
+        <p id="mensaje"></p>
+
+    </section>
+
+    <section id="comprobante" class="tarjeta" style="display:none;">
+
+        <div id="documento">
+
+            <h2 style="text-align:center;">COPACI Nicolás Romero</h2>
+            <h3 style="text-align:center;">Comprobante de solicitud</h3>
+
+            <hr>
+
+            <h2 style="text-align:center;">
+                CONSTANCIA DE RESIDENCIA
+            </h2>
+
+            <p><strong>Folio:</strong> <span id="folio"></span></p>
+            <p><strong>Fecha de solicitud:</strong> <span id="fecha"></span></p>
+            <p><strong>Nombre:</strong> <span id="nombreComprobante"></span></p>
+            <p><strong>Dirección:</strong> <span id="direccionComprobante"></span></p>
+            <p><strong>Correo:</strong> <span id="correoComprobante"></span></p>
+
+            <p>
+                Se registra la solicitud de constancia de residencia
+                del ciudadano cuyos datos aparecen en este comprobante.
+            </p>
+
+            <p><strong>Estado:</strong> Solicitud pendiente de revisión.</p>
+
+            <br><br>
+
+            <div style="display:flex; justify-content:space-around; text-align:center; gap:20px;">
+
+                <div>
+                    __________________________
+                    <p>Firma del ciudadano</p>
+                </div>
+
+                <div>
+                    __________________________
+                    <p>Firma y sello del COPACI</p>
+                </div>
+
+            </div>
+
+            <p style="text-align:center; margin-top:25px;">
+                Este documento es un comprobante de solicitud,
+                no una constancia oficial de residencia.
+            </p>
+
+        </div>
+
+        <button class="boton" onclick="window.print()">
+            Imprimir comprobante
+        </button>
+
+    </section>
+
+</main>
+
+<script>
+
+    // OBTENER DATOS DEL CIUDADANO
+
+    let ciudadano = JSON.parse(
+        localStorage.getItem("ciudadanoActual")
+    );
+
+    if (!ciudadano) {
+
+        const usuarioActual = localStorage.getItem("usuarioActual");
+
+        const ciudadanos = JSON.parse(
+            localStorage.getItem("ciudadanos")
+        ) || [];
+
+        ciudadano = ciudadanos.find(function(persona) {
+            return persona.usuario === usuarioActual;
+        });
+
+    }
+
+    if (ciudadano) {
+
+        document.getElementById("nombre").textContent =
+            ciudadano.nombre || "";
+
+        document.getElementById("direccion").textContent =
+            ciudadano.direccion || "";
+
+        document.getElementById("usuario").textContent =
+            ciudadano.usuario || "";
+
+        document.getElementById("correo").textContent =
+            ciudadano.correo || "";
+
+    } else {
+
+        document.getElementById("mensaje").textContent =
+            "No se encontraron los datos del ciudadano. Inicia sesión nuevamente.";
+
+    }
+
+
+    // GENERAR SOLICITUD
+
+    function solicitarConstancia() {
+
+        if (!ciudadano) {
+            return;
+        }
+
+        let constancias = JSON.parse(
+            localStorage.getItem("constancias")
+        ) || [];
+
+        const folio =
+            "COPACI-" +
+            Date.now().toString().slice(-8);
+
+        const fecha = new Date().toLocaleDateString("es-MX");
+
+        const solicitud = {
+
+            folio: folio,
+            nombre: ciudadano.nombre,
+            direccion: ciudadano.direccion,
+            usuario: ciudadano.usuario,
+            correo: ciudadano.correo,
+            fecha: fecha,
+            estado: "Pendiente"
+
+        };
+
+        constancias.push(solicitud);
+
+        localStorage.setItem(
+            "constancias",
+            JSON.stringify(constancias)
+        );
+
+        document.getElementById("folio").textContent = folio;
+
+        document.getElementById("fecha").textContent = fecha;
+
+        document.getElementById("nombreComprobante").textContent =
+            ciudadano.nombre;
+
+        document.getElementById("direccionComprobante").textContent =
+            ciudadano.direccion;
+
+        document.getElementById("correoComprobante").textContent =
+            ciudadano.correo;
+
+        document.getElementById("comprobante").style.display = "block";
+
+        document.getElementById("mensaje").textContent =
+            "¡Tu solicitud se generó correctamente!";
+
+    }
+
+</script>
+
+<style>
+
+@media print {
+
+    header,
+    .bienvenida,
+    main > section:first-of-type,
+    #comprobante button {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    #comprobante {
+        display: block !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+}
+
+</style>
+
+</body>
+</html>
